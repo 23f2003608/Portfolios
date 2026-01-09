@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Science Portfolio | IIT Madras</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-color: #e0e5ec;
+            --shadow-light: #ffffff;
+            --shadow-dark: #a3b1c6;
+            --text-main: #4a5568;
+            --accent-color: #3182ce;
+            --gradient-accent: linear-gradient(135deg, #3182ce 0%, #667eea 100%);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Glassmorphism Background Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, rgba(163,177,198,0.05) 100%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Custom Cursor Effect */
+        #cursor-dot {
+            width: 20px;
+            height: 20px;
+            background: var(--bg-color);
+            box-shadow: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease-out;
+            display: none;
+        }
+
+        /* Neumorphism Utilities */
+        .neu-flat {
+            background: var(--bg-color);
+            box-shadow: 9px 9px 16px var(--shadow-dark), -9px -9px 16px var(--shadow-light);
+            border-radius: 20px;
+            border: none;
+        }
+
+        .neu-inset {
+            background: var(--bg-color);
+            box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+            border-radius: 20px;
+        }
+
+        .neu-button {
+            background: var(--bg-color);
+            box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+            border-radius: 12px;
+            padding: 12px 24px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .neu-button:hover {
+            box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
+            transform: translateY(-3px);
+            color: var(--accent-color);
+        }
+
+        .neu-button:active {
+            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+            transform: scale(0.95);
+        }
+
+        .neu-card {
+            background: var(--bg-color);
+            box-shadow: 9px 9px 16px var(--shadow-dark), -9px -9px 16px var(--shadow-light);
+            border-radius: 20px;
+            padding: 2rem;
+            height: 100%;
+            transition: all 0.4s ease;
+        }
+
+        .neu-card:hover {
+            box-shadow: 15px 15px 30px var(--shadow-dark), -15px -15px 30px var(--shadow-light);
+            transform: translateY(-10px);
+        }
+
+        /* Gradient Text Effect */
+        .gradient-text {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 4rem;
+            text-align: center;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 4px;
+            background: var(--gradient-accent);
+            border-radius: 10px;
+        }
+
+        /* Hero Image Float Animation */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .hero-img {
+            width: 320px;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 20px 20px 40px var(--shadow-dark), -20px -20px 40px var(--shadow-light);
+            border: 10px solid var(--bg-color);
+            animation: float 5s ease-in-out infinite;
+        }
+
+        /* Skyscroll nav: preserves site theme (neumorphism + soft blur)
+               and adds layered cloud parallax for a sky-like scroll effect */
+            .skyscroll {
+            background: linear-gradient(180deg, rgba(224,229,236,0.92) 0%, rgba(255,255,255,0.6) 100%);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 6px 20px rgba(163,177,198,0.25);
+            padding: 1rem 0;
+            transition: all 0.35s ease;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+            overflow: visible;
+        }
+
+        /* subtle cloud layers (visual only) */
+        .skyscroll::before,
+        .skyscroll::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 60px;
+            pointer-events: none;
+            z-index: -1;
+            background-repeat: repeat-x;
+            background-size: 300px 60px;
+            opacity: 0.14;
+            transform: translateY(-10px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .skyscroll::before {
+            top: -18px;
+            background-image: radial-gradient(closest-side, rgba(255,255,255,0.85), rgba(255,255,255,0.05));
+            background-position: center calc(50% + var(--skyscroll-offset, 0px));
+            opacity: 0.28;
+            filter: blur(8px);
+        }
+
+        .skyscroll::after {
+            top: -8px;
+            background-image: linear-gradient(90deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.02) 100%);
+            background-position: center calc(30% + var(--skyscroll-offset, 0px));
+            opacity: 0.18;
+            filter: blur(6px);
+        }
+
+        /* scrolled state reduces padding and increases contrast */
+        .skyscroll.scrolled {
+            padding: 0.5rem 0;
+            box-shadow: 0 10px 30px rgba(163,177,198,0.28);
+            background: linear-gradient(180deg, rgba(224,229,236,0.98) 0%, rgba(250,250,250,0.9) 100%);
+        }
+
+
+        /* Redesigned pill navigation: centered glassmorphic bar with animated indicator */
+        .pills-nav {
+            position: sticky;
+            top: 14px;
+            z-index: 1030;
+            padding: 6px 0;
+            display: flex;
+            justify-content: center;
+            pointer-events: auto;
+        }
+
+        .pills-container {
+            width: min(100%, 960px);
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pills-bar {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 8px;
+            align-items: center;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            border-radius: 999px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 6px 18px rgba(20,24,30,0.04);
+        }
+
+        .pills-bar::-webkit-scrollbar { height: 8px; }
+        .pills-bar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.06); border-radius: 10px; }
+
+        .pill {
+            flex: 0 0 auto;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: transparent;
+            color: rgba(20,25,33,0.85);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 220ms ease, transform 220ms ease;
+            white-space: nowrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pill i { vertical-align: middle; }
+
+        .pill:hover { transform: translateY(-4px); color: var(--accent-color); }
+
+        /* indicator: a capsule that slides underneath the active pill */
+        .pill-indicator {
+            position: absolute;
+            top: 6px;
+            height: calc(100% - 12px);
+            left: 6px;
+            width: 60px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(49,130,206,0.95), rgba(102,126,234,0.95));
+            box-shadow: 6px 10px 24px rgba(99,102,241,0.12);
+            transition: transform 320ms cubic-bezier(.22,.9,.32,1), width 320ms cubic-bezier(.22,.9,.32,1), left 320ms cubic-bezier(.22,.9,.32,1);
+            z-index: 1;
+            will-change: transform, width, left;
+        }
+
+        .pill.active { color: #fff !important; }
+
+    /* Projects: card hover effects, overlay actions, and modal */
+    .project-card { transition: transform 300ms ease, box-shadow 300ms ease; transform-origin: center; cursor: pointer; }
+    .project-card:hover { transform: translateY(-8px) rotateX(1deg); box-shadow: 0 18px 40px rgba(20,24,30,0.08); }
+
+    .project-media { position: relative; overflow: hidden; border-radius: 12px; }
+    .project-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .project-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 220ms ease; background: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.28)); }
+    .project-card:hover .project-overlay { opacity: 1; }
+
+    .project-actions { display: flex; gap: 10px; }
+    .project-actions .btn-action { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.08); padding: 8px 12px; border-radius: 999px; backdrop-filter: blur(4px); }
+    .project-actions .btn-action:hover { transform: translateY(-3px); }
+
+    /* Subtle tilt (applied via JS) */
+    .tilt { will-change: transform; }
+
+    /* Modal */
+    .project-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(8,10,12,0.45); z-index: 2000; }
+    .project-modal[aria-hidden="false"] { display: flex; }
+    .project-modal-inner { width: min(720px, 92%); background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 30px 80px rgba(2,6,23,0.35); color: #111; }
+    .project-modal-close { position: absolute; right: 18px; top: 18px; background: transparent; border: none; font-size: 26px; cursor: pointer; }
+    .project-modal .project-tags { margin-top: 12px; display:flex; gap:8px; flex-wrap:wrap; }
+    .project-modal .project-tags .tag { background: #f1f5f9; padding:6px 10px; border-radius:999px; font-size:0.85rem; }
+    .project-modal-links { margin-top:18px; display:flex; gap:12px; }
+    .project-modal-links a { padding:10px 14px; border-radius:10px; background:var(--bg-color); text-decoration:none; color:var(--text-main); border:1px solid rgba(0,0,0,0.04); }
+
+        /* Refined scrollbar and pill visuals (remove duplicated/conflicting styles) */
+        .pills-bar::-webkit-scrollbar { height: 8px; }
+        .pills-bar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.06); border-radius: 10px; }
+
+        /* Pills are label+icon only; background is transparent so indicator is primary visual */
+        .pill {
+            flex: 0 0 auto;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: transparent;
+            color: rgba(20,25,33,0.85);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 200ms ease, transform 200ms ease;
+            white-space: nowrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .pill:hover { transform: translateY(-3px); color: var(--accent-color); }
+
+        /* Active pill: white text (indicator provides highlight). No extra shadow to avoid double glow. */
+        .pill.active { color: #fff !important; }
+
+        /* Soften indicator shadow to avoid a strong repeating blue glow */
+        .pill-indicator {
+            box-shadow: 0 6px 18px rgba(49,130,206,0.10);
+        }
+
+        .skill-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 8px;
+            border-radius: 50px;
+            background: var(--bg-color);
+            box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .skill-badge:hover {
+            box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+            color: var(--accent-color);
+        }
+
+        .timeline-item {
+            border-left: 3px solid var(--shadow-dark);
+            padding-left: 30px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 0;
+            width: 22px;
+            height: 22px;
+            background: var(--bg-color);
+            border: 4px solid var(--accent-color);
+            border-radius: 50%;
+            box-shadow: 4px 4px 8px var(--shadow-dark);
+        }
+
+        .footer {
+            padding: 80px 0;
+            text-align: center;
+            background: var(--bg-color);
+            box-shadow: inset 0 10px 20px var(--shadow-dark);
+        }
+
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { 
+            background: var(--shadow-dark); 
+            border-radius: 10px;
+            border: 3px solid var(--bg-color);
+        }
+
+        @media (max-width: 991px) {
+            .hero-img { width: 250px; height: 250px; }
+            section { padding: 60px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Custom Cursor -->
+    <div id="cursor-dot"></div>
+
+    <!-- 1. Redesigned centered pill navigation (glassmorphic) -->
+    <div class="pills-nav" role="navigation" aria-label="Section Navigation">
+        <div class="container position-relative pills-container">
+            <div id="pillsBar" class="pills-bar" aria-hidden="false">
+                <a class="pill" href="#hero" data-target="hero" aria-label="Home"><i data-lucide="home"></i><span>Home</span></a>
+                <a class="pill" href="#about" data-target="about" aria-label="About"><i data-lucide="user"></i><span>About</span></a>
+                <a class="pill" href="#skills" data-target="skills" aria-label="Skills"><i data-lucide="code-2"></i><span>Skills</span></a>
+                <a class="pill" href="#exp" data-target="exp" aria-label="Experience"><i data-lucide="briefcase"></i><span>Experience</span></a>
+                <a class="pill" href="#projects" data-target="projects" aria-label="Projects"><i data-lucide="grid"></i><span>Projects</span></a>
+                <a class="pill" href="#research" data-target="research" aria-label="Research"><i data-lucide="microscope"></i><span>Research</span></a>
+                <a class="pill" href="#education" data-target="education" aria-label="Education"><i data-lucide="book-open"></i><span>Education</span></a>
+                <a class="pill" href="#volunteer" data-target="volunteer" aria-label="Volunteer"><i data-lucide="users"></i><span>Volunteer</span></a>
+                <a class="pill" href="#certs" data-target="certs" aria-label="Credentials"><i data-lucide="award"></i><span>Creds</span></a>
+                <a class="pill" href="#testimonials" data-target="testimonials" aria-label="Testimonials"><i data-lucide="message-square"></i><span>Voices</span></a>
+                <a class="pill" href="#contact" data-target="contact" aria-label="Contact"><i data-lucide="mail"></i><span>Contact</span></a>
+                <div class="pill-indicator" aria-hidden="true"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Hero Section -->
+    <section id="hero" class="d-flex align-items-center">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-center text-lg-start reveal">
+                    <h5 class="text-uppercase tracking-widest mb-3 opacity-75">Data Science & AI Enthusiast</h5>
+                    <h1 class="display-3 fw-bold mb-4">I Code <span class="gradient-text">Intelligence</span> into Data.</h1>
+                    <p class="lead mb-5 text-secondary">Final year scholar at <b>IIT Madras</b>. Bridging the gap between mathematical complexity and real-world scalability.</p>
+                    <div class="d-flex gap-4 justify-content-center justify-content-lg-start">
+                        <a href="#projects" class="neu-button">View Work <i data-lucide="sparkles"></i></a>
+                        <a href="#contact" class="neu-button">Collaborate</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center mt-5 mt-lg-0 reveal">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="hero-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. About Section -->
+    <section id="about" class="container reveal">
+        <div class="neu-card">
+            <h2 class="section-title">01. Identity</h2>
+            <div class="row align-items-center">
+                <div class="col-md-8 offset-md-2 text-center">
+                    <p class="fs-5 lh-lg">Passionate about the intersection of <b>Statistical Modeling</b> and <b>Machine Learning</b>. Being part of the world-renowned <b>IIT Madras</b> ecosystem has honed my analytical thinking. I specialize in Predictive Analytics, NLP, and Big Data technologies.</p>
+                    <div class="mt-5 d-flex justify-content-center flex-wrap gap-5">
+                        <div class="text-center">
+                            <h2 class="fw-bold gradient-text mb-0">12+</h2>
+                            <p class="small text-uppercase tracking-wider">Projects</p>
+                        </div>
+                        <div class="text-center">
+                            <h2 class="fw-bold gradient-text mb-0">3.9</h2>
+                            <p class="small text-uppercase tracking-wider">CGPA</p>
+                        </div>
+                        <div class="text-center">
+                            <h2 class="fw-bold gradient-text mb-0">2</h2>
+                            <p class="small text-uppercase tracking-wider">Internships</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Skills Section -->
+    <section id="skills" class="container reveal">
+        <h2 class="section-title">02. Arsenal</h2>
+        <div class="row g-5">
+            <div class="col-md-4">
+                <div class="neu-card text-center">
+                    <div class="neu-inset d-inline-block p-4 mb-4">
+                        <i data-lucide="code-2" size="32" class="text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold mb-4">Languages</h5>
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <span class="skill-badge">Python</span>
+                        <span class="skill-badge">SQL</span>
+                        <span class="skill-badge">R</span>
+                        <span class="skill-badge">C++</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="neu-card text-center">
+                    <div class="neu-inset d-inline-block p-4 mb-4">
+                        <i data-lucide="brain-circuit" size="32" class="text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold mb-4">Machine Learning</h5>
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <span class="skill-badge">PyTorch</span>
+                        <span class="skill-badge">SkLearn</span>
+                        <span class="skill-badge">Keras</span>
+                        <span class="skill-badge">Pandas</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="neu-card text-center">
+                    <div class="neu-inset d-inline-block p-4 mb-4">
+                        <i data-lucide="database" size="32" class="text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold mb-4">Tools</h5>
+                    <div class="d-flex flex-wrap justify-content-center">
+                        <span class="skill-badge">Docker</span>
+                        <span class="skill-badge">AWS</span>
+                        <span class="skill-badge">Git</span>
+                        <span class="skill-badge">Tableau</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Experience Section -->
+    <section id="exp" class="container reveal">
+        <h2 class="section-title">03. Career Path</h2>
+        <div class="row">
+            <div class="col-md-10 mx-auto">
+                <div class="neu-card p-5">
+                    <div class="timeline-item">
+                        <h4 class="fw-bold">Data Analyst Intern</h4>
+                        <h6 class="text-primary mb-2">Reliance Jio | Summer 2024</h6>
+                        <p class="text-secondary">Spearheaded churn prediction modeling using XGBoost. Reduced false positives by 14% through advanced feature engineering on customer behavior data.</p>
+                    </div>
+                    <div class="timeline-item mb-0">
+                        <h4 class="fw-bold">Machine Learning Fellow</h4>
+                        <h6 class="text-primary mb-2">IIT Madras Research Lab | 2023 - Present</h6>
+                        <p class="text-secondary mb-0">Collaborating on federated learning research. Implementing privacy-preserving ML models for sensitive healthcare datasets.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Projects Section -->
+    <section id="projects" class="container reveal">
+        <h2 class="section-title">04. Portfolio Pieces</h2>
+        <div class="row g-4 project-grid">
+            <div class="col-md-6">
+                <div class="neu-card project-card tilt" tabindex="0" role="button"
+                     data-title="Visionary: Real-time Object Detection"
+                     data-desc="A highly optimized YOLO-based system for urban surveillance, capable of 60FPS on edge devices."
+                     data-tags="#ComputerVision,#Python"
+                     data-github="#"
+                     data-live="#">
+                    <div class="project-media neu-inset overflow-hidden mb-4" style="height: 200px; display: grid; place-items: center;">
+                        <i data-lucide="camera" size="64" class="opacity-25"></i>
+                        <div class="project-overlay">
+                            <div class="project-actions">
+                                <button class="btn-action" data-action="view">View</button>
+                                <a class="btn-action" data-action="github" href="#" target="_blank" rel="noopener"><i data-lucide="github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="fw-bold project-title">Visionary: Real-time Object Detection</h4>
+                    <p class="text-secondary project-excerpt">A highly optimized YOLO-based system for urban surveillance, capable of 60FPS on edge devices.</p>
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <span class="small fw-bold opacity-50 project-tags">#ComputerVision #Python</span>
+                        <a href="#" class="neu-button p-2 px-3 rounded-pill"><i data-lucide="github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="neu-card project-card tilt" tabindex="0" role="button"
+                     data-title="SentiNet: BERT Sentiment Engine"
+                     data-desc="Fine-tuned BERT model for detecting emotional shifts in financial news to predict market volatility."
+                     data-tags="#NLP,#Transformers"
+                     data-github="#"
+                     data-live="#">
+                    <div class="project-media neu-inset overflow-hidden mb-4" style="height: 200px; display: grid; place-items: center;">
+                        <i data-lucide="message-square" size="64" class="opacity-25"></i>
+                        <div class="project-overlay">
+                            <div class="project-actions">
+                                <button class="btn-action" data-action="view">View</button>
+                                <a class="btn-action" data-action="live" href="#" target="_blank" rel="noopener"><i data-lucide="external-link"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="fw-bold project-title">SentiNet: BERT Sentiment Engine</h4>
+                    <p class="text-secondary project-excerpt">Fine-tuned BERT model for detecting emotional shifts in financial news to predict market volatility.</p>
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <span class="small fw-bold opacity-50 project-tags">#NLP #Transformers</span>
+                        <a href="#" class="neu-button p-2 px-3 rounded-pill"><i data-lucide="external-link"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Research Section -->
+    <section id="research" class="container reveal">
+        <div class="neu-card text-center p-5">
+            <h2 class="section-title">05. Academic Research</h2>
+            <i data-lucide="microscope" size="48" class="text-primary mb-4"></i>
+            <h4 class="fw-bold mb-3">Reinforcement Learning in Smart Grids</h4>
+            <p class="col-lg-8 mx-auto fs-5 mb-4 text-secondary">Investigating PPO algorithms for dynamic energy distribution in microgrids to minimize wastage by 12% in peak hours.</p>
+            <div class="neu-inset p-3 d-inline-block rounded-pill px-5 fw-bold text-primary">Status: Under Review at ICML</div>
+        </div>
+    </section>
+
+    <!-- 8. Education Section -->
+    <section id="education" class="container reveal">
+        <h2 class="section-title">06. Education</h2>
+        <div class="neu-card p-4">
+            <div class="row align-items-center">
+                <div class="col-lg-2 text-center">
+                    <div class="neu-inset p-4 rounded-circle d-inline-block">
+                        <i data-lucide="graduation-cap" size="40" class="text-primary"></i>
+                    </div>
+                </div>
+                <div class="col-lg-10">
+                    <h4 class="fw-bold mb-1">Bachelor of Science in Data Science</h4>
+                    <h5 class="gradient-text mb-3">Indian Institute of Technology, Madras</h5>
+                    <p class="mb-0 text-secondary">Specialization in AI & ML. Academic Honors for top 5% performance in Linear Algebra & Statistics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. Volunteer Experience -->
+    <section id="volunteer" class="container reveal">
+        <h2 class="section-title">07. Community Contribution</h2>
+        <div class="row g-4">
+            <div class="col-md-6 mx-auto">
+                <div class="neu-card text-center">
+                    <div class="neu-inset d-inline-block p-3 rounded-circle mb-3">
+                        <i data-lucide="users" class="text-primary"></i>
+                    </div>
+                    <h5 class="fw-bold">Lead Mentor | IITM Coding Club</h5>
+                    <p class="text-secondary">Organizing workshops on PyTorch for 500+ students across various disciplines within the campus.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. Certs & Pubs -->
+    <section id="certs" class="container reveal">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <h2 class="section-title">08. Credentials</h2>
+                <div class="neu-card">
+                    <div class="d-flex align-items-center mb-3">
+                        <i data-lucide="award" class="me-3 text-warning"></i>
+                        <span>AWS Machine Learning Specialist</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i data-lucide="award" class="me-3 text-warning"></i>
+                        <span>TensorFlow Certified Developer</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i data-lucide="award" class="me-3 text-warning"></i>
+                        <span>Databricks Lakehouse Associate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2 class="section-title">09. Publications</h2>
+                <div class="neu-card">
+                    <h6 class="fw-bold mb-1">Efficient Transformer Architectures for Edge Devices</h6>
+                    <p class="small text-muted mb-3">Journal of AI Research, Vol 14, 2024</p>
+                    <a href="#" class="neu-button py-2">View Paper <i data-lucide="file-text"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11. Testimonials Section -->
+    <section id="testimonials" class="container reveal">
+        <h2 class="section-title">10. Peer Voices</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="neu-card text-center p-4">
+                    <p class="fst-italic opacity-75">"A master of feature engineering. His models are always robust and production-ready."</p>
+                    <h6 class="fw-bold mt-4 mb-0">Arjun S.</h6>
+                    <small class="text-primary">Data Scientist @ Amazon</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="neu-card text-center p-4">
+                    <p class="fst-italic opacity-75">"Incredible focus on ethics in AI. A valuable asset to any research team."</p>
+                    <h6 class="fw-bold mt-4 mb-0">Dr. Meera K.</h6>
+                    <small class="text-primary">Associate Professor, IITM</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="neu-card text-center p-4">
+                    <p class="fst-italic opacity-75">"High energy and high technical skill. He delivered our project ahead of schedule."</p>
+                    <h6 class="fw-bold mt-4 mb-0">Vikram R.</h6>
+                    <small class="text-primary">CTO @ NexaStream</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. Contact Section -->
+    <section id="contact" class="container reveal">
+        <h2 class="section-title">11. Start a Dialogue</h2>
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="neu-card p-5">
+                    <form id="portfolioContact">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="small fw-bold mb-2 ps-2">Full Name</label>
+                                <div class="neu-inset p-3">
+                                    <input type="text" class="form-control bg-transparent border-0 shadow-none" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="small fw-bold mb-2 ps-2">Email Address</label>
+                                <div class="neu-inset p-3">
+                                    <input type="email" class="form-control bg-transparent border-0 shadow-none" required>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-5">
+                                <label class="small fw-bold mb-2 ps-2">Project Vision</label>
+                                <div class="neu-inset p-3">
+                                    <textarea class="form-control bg-transparent border-0 shadow-none" rows="5" required></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button type="submit" class="neu-button w-100 py-3 rounded-pill justify-content-center">
+                                    Dispatch Message <i data-lucide="zap"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 13. Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <h2 class="section-title mb-5">12. Digital Footprints</h2>
+            <div class="d-flex justify-content-center gap-4 mb-5">
+                <a href="#" class="neu-button rounded-circle p-4"><i data-lucide="linkedin"></i></a>
+                <a href="#" class="neu-button rounded-circle p-4"><i data-lucide="github"></i></a>
+                <a href="#" class="neu-button rounded-circle p-4"><i data-lucide="mail"></i></a>
+                <a href="#" class="neu-button rounded-circle p-4"><i data-lucide="globe"></i></a>
+            </div>
+            <p class="mb-0 opacity-50">© 2025 IIT Madras Data Science Graduate Portfolio. Stay Innovative.</p>
+        </div>
+    </footer>
+
+    <!-- Project modal (inserted here so it's last in DOM but before scripts) -->
+    <div id="projectModal" class="project-modal" aria-hidden="true">
+        <div class="project-modal-inner">
+            <button class="project-modal-close" aria-label="Close">&times;</button>
+            <h3 id="pm-title">Title</h3>
+            <p id="pm-desc">Description</p>
+            <div id="pm-tags" class="project-tags"></div>
+            <div class="project-modal-links">
+                <a id="pm-github" href="#" target="_blank" rel="noopener">GitHub</a>
+                <a id="pm-live" href="#" target="_blank" rel="noopener">Live</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Reveal Animation on Scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // Initial check
+        window.onload = reveal;
+
+        // Custom Cursor Movement
+        const cursor = document.getElementById('cursor-dot');
+        if(window.innerWidth > 991) {
+            cursor.style.display = 'block';
+            document.addEventListener('mousemove', e => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+            
+            document.addEventListener('mousedown', () => cursor.style.transform = 'scale(0.8) translate(-50%, -50%)');
+            document.addEventListener('mouseup', () => cursor.style.transform = 'scale(1) translate(-50%, -50%)');
+        }
+
+        // Smooth Form Submission Effect
+        document.getElementById('portfolioContact').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = 'Transmission Received <i data-lucide="check-circle"></i>';
+            btn.classList.add('text-success');
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.classList.remove('text-success');
+                lucide.createIcons();
+                e.target.reset();
+            }, 3000);
+        });
+
+        // Skyscroll: parallax offset + scrolled class toggle (keeps same visual theme)
+        (function() {
+            const nav = document.querySelector('.skyscroll');
+            function onScroll() {
+                if (!nav) return;
+                const y = window.scrollY || window.pageYOffset;
+                // subtle parallax offset applied to pseudo-elements (clamped)
+                const offset = Math.min(Math.max(y / 8, 0), 60);
+                nav.style.setProperty('--skyscroll-offset', offset + 'px');
+                if (y > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            // initial state
+            onScroll();
+        })();
+
+        // Pill nav: animated indicator, highlight and scroll tracking
+        (function() {
+            const pillsBar = document.getElementById('pillsBar');
+            const pills = Array.from(document.querySelectorAll('.pill'));
+            const indicator = document.querySelector('.pill-indicator');
+            const sections = Array.from(document.querySelectorAll('section[id]'));
+            if (!pillsBar || pills.length === 0 || !indicator || sections.length === 0) return;
+
+            // helper to set active pill and move indicator
+            function activatePill(pillEl) {
+                pills.forEach(p => p.classList.remove('active'));
+                if (!pillEl) return;
+                pillEl.classList.add('active');
+                // compute position relative to pillsBar
+                const barRect = pillsBar.getBoundingClientRect();
+                const pillRect = pillEl.getBoundingClientRect();
+                const left = pillRect.left - barRect.left + pillsBar.scrollLeft;
+                const width = pillRect.width;
+                // set indicator width and transform
+                indicator.style.width = Math.max(44, width - 6) + 'px';
+                // place indicator with left offset (6px padding inside bar)
+                indicator.style.transform = `translateX(${left + 6}px)`;
+                // ensure pill is visible (center if possible)
+                const centerOffset = left - (pillsBar.clientWidth / 2) + (width / 2);
+                pillsBar.scrollTo({ left: Math.max(0, centerOffset), behavior: 'smooth' });
+            }
+
+            // click behavior: smooth scroll to section
+            pills.forEach(p => {
+                p.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = p.dataset.target;
+                    const target = document.getElementById(targetId);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        activatePill(p);
+                    }
+                });
+            });
+
+            // on scroll, find nearest section to top offset
+            function onScrollPills() {
+                const topOffset = Math.max(80, Math.round(window.innerHeight * 0.08));
+                let closest = null;
+                let minDist = Infinity;
+                sections.forEach(sec => {
+                    const rect = sec.getBoundingClientRect();
+                    const dist = Math.abs(rect.top - topOffset);
+                    if (dist < minDist) {
+                        minDist = dist;
+                        closest = sec;
+                    }
+                });
+                if (closest) {
+                    const targetPill = pills.find(p => p.dataset.target === closest.id);
+                    if (targetPill) activatePill(targetPill);
+                }
+            }
+
+            // throttle
+            let t = null;
+            window.addEventListener('scroll', () => {
+                if (t) clearTimeout(t);
+                t = setTimeout(() => { onScrollPills(); t = null; }, 80);
+            }, { passive: true });
+
+            window.addEventListener('resize', () => {
+                // reposition indicator for active pill after resize
+                const active = document.querySelector('.pill.active');
+                if (active) activatePill(active);
+            });
+
+            // initial activation after icons render
+            setTimeout(() => {
+                // render lucide icons in case they haven't been drawn
+                if (window.lucide && typeof lucide.createIcons === 'function') lucide.createIcons();
+                onScrollPills();
+            }, 160);
+        })();
+
+        // Projects: tilt effect and modal viewer
+        (function() {
+            const cards = Array.from(document.querySelectorAll('.project-card'));
+            const modal = document.getElementById('projectModal');
+            const pmTitle = document.getElementById('pm-title');
+            const pmDesc = document.getElementById('pm-desc');
+            const pmTags = document.getElementById('pm-tags');
+            const pmGithub = document.getElementById('pm-github');
+            const pmLive = document.getElementById('pm-live');
+
+            if (!cards.length || !modal) return;
+
+            function openModal(data) {
+                pmTitle.textContent = data.title || '';
+                pmDesc.textContent = data.desc || '';
+                pmTags.innerHTML = '';
+                (data.tags || '').split(',').filter(Boolean).forEach(t => {
+                    const el = document.createElement('span'); el.className = 'tag'; el.textContent = t.trim(); pmTags.appendChild(el);
+                });
+                pmGithub.href = data.github || '#';
+                pmLive.href = data.live || '#';
+                modal.setAttribute('aria-hidden', 'false');
+            }
+
+            function closeModal() {
+                modal.setAttribute('aria-hidden', 'true');
+            }
+
+            // close handlers
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+            modal.querySelector('.project-modal-close').addEventListener('click', closeModal);
+            window.addEventListener('keyup', (e) => { if (e.key === 'Escape') closeModal(); });
+
+            // add interactions to each card
+            cards.forEach(card => {
+                const media = card.querySelector('.project-media');
+                const rectBase = () => card.getBoundingClientRect();
+
+                // click on view button opens modal
+                card.querySelectorAll('[data-action]').forEach(btn => {
+                    btn.addEventListener('click', (ev) => {
+                        ev.stopPropagation(); ev.preventDefault();
+                        const action = btn.dataset.action;
+                        const data = {
+                            title: card.dataset.title,
+                            desc: card.dataset.desc,
+                            tags: card.dataset.tags,
+                            github: card.dataset.github,
+                            live: card.dataset.live
+                        };
+                        if (action === 'view') openModal(data);
+                        if (action === 'github' && data.github) window.open(data.github, '_blank');
+                        if (action === 'live' && data.live) window.open(data.live, '_blank');
+                    });
+                });
+
+                // tilt effect (desktop only)
+                let supportsPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+                if (supportsPointer && media) {
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = rectBase();
+                        const dx = (e.clientX - (rect.left + rect.width/2)) / rect.width;
+                        const dy = (e.clientY - (rect.top + rect.height/2)) / rect.height;
+                        const rx = (-dy * 6); // rotateX
+                        const ry = (dx * 8); // rotateY
+                        card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
+                    });
+                    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+                }
+
+                // allow whole card click to view
+                card.addEventListener('click', () => {
+                    const data = { title: card.dataset.title, desc: card.dataset.desc, tags: card.dataset.tags, github: card.dataset.github, live: card.dataset.live };
+                    openModal(data);
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
